@@ -3,39 +3,90 @@ This project is a RISC-V cache simulator, designed as an exploration of cache de
 
 **Visual:** Comparison of hit rate and hits/misses is made visually per cache configuration via graphs and a table.
 
-**Customizable:** Users may change **(1)** the input file name and path, and **(2)** add as many cache configurations with different parameters as desired.
+**Customizable:** Users may change **(1)** the input RISC-V program via file name and path, and **(2)** add as many cache configurations with different parameters as desired.
 
 ## Setup
 From ROOT: `py -m pip install -r requirements.txt`
+
+### Requirements
+- **Python 3.10+**
+- **matplotlib**
+    - install via requirements.txt
+- **tkinter**
+    - bundled with Python on Windows
 
 ## Run
 From ROOT: `py main.py`
 
 ## Instructions
-Editable information resides in `main.py`.
+User-editable information resides in `main.py`.
 
 ### INPUT_FILE
-Change the path of the provided RISC-V instructions. Note that instrucions must be in hex format, as the simulator decodes instructions from hex.
+Change the path of the provided RISC-V instructions. Note that input must be formatted as lines of instrucions in hex. `inputs/*` contains two sample files, and custom input files should be formatted similarly.
+
+**Example:**
+```
+10000093
+04000413
+00341413
+06000493
+00349493
+00800213
+...
+```
 
 ### CONFIGS
 Any number of configurations may be added at one time, with any desired name, associativity, number of sets, and block bytes.
 
 The format is `list[tuple[str, int, int, int]]`.\
-`str`: Configuration name (direct-mapped, 2-way, and 4-way configurations are pre-loaded, but editable)\
-1st `int`: Cache associativity - the number of ways (slots) per set. With direct-mapped ($N$=1), each memory address can go into one cache location. With $N$-way structure, $N$ different blocks can occupy the same set at the same time.
-2nd `int`: Number of sets in the cache. Each memory address maps to one set based on its address.\
-3rd `int`: Block bytes (or line size). This is the size of data transferred between memory and cache in one operation.
+`str`: **Configuration name** (direct-mapped, 2-way, and 4-way configurations are pre-loaded, but editable)\
+1st `int`: **Cache associativity** - the number of ways (slots) per set. With direct-mapped ($N$=1), each memory address can go into one cache location. With $N$-way structure, $N$ different blocks can occupy the same set at the same time.
+2nd `int`: **Number of sets** in the cache. Each memory address maps to one set based on its address.\
+3rd `int`: **Block bytes** (or line size). This is the size of data transferred between memory and cache in one operation.
+
+## Sample Configuration
+The simulator comes pre-loaded with two sample cache configurations testing two different parameters.
+
+### Associativity
+`inputs/*` contains an `assoc_demo.txt` designed to show performance differences between cache designs that differ in associativity. 
+
+The configuration in **MAIN** should look like this:
+```
+INPUT_FILE = "inputs/assoc_demo.txt"
+CONFIGS = [
+    ("direct-mapped", 1, 8, 16),
+    ("2-way",         2, 8, 16),
+    ("4-way",         4, 8, 16),
+]
+```
+
+`assoc_demo.txt` is a RISC-V program that creates and accesses arrays to simulate cache function. The array addresses are such that their contents will map to the same set when in the cache. Thus, the only way to fit multiple array contents in the cache is to increase the associativity.
+
+### Number of Sets
+`inputs/*` contains a `num_sets_demo.txt` designed to show performance differences between cache designs that differ in the number of sets. 
+
+The configuration in **MAIN** should look like this:
+```
+INPUT_FILE = "inputs/num_sets_demo.txt"
+CONFIGS = [
+    ("1-set",  1, 1, 16),
+    ("2-set",  1, 2, 16),
+    ("4-set",  1, 4, 16),
+]
+```
+
+`num_sets_demo.txt` is a RISC-V program that creates and accesses arrays to simulate cache function. The array addresses are located one block apart so that they will be separated into different cache sets. Thus, the only way to fit multiple array contents in the cache is to increase the number of sets.
 
 ## Organization
 
 ### gui
 Contains visual GUI elements.\
-`app.py` contains the main CacheExplorer class, where tabs are organized using a tkinter notebook.\
-`comparison_tab.py` contains the ComparisonTab class, which loads the comparison between cache configurations and the graphs.\
-`config_tab.py` contains the ConfigTab class, which loads the statistics and logs for each individual configuration for GUI viewing.
+`app.py` contains the main **CacheExplorer** class, where tabs are organized using a tkinter notebook.\
+`comparison_tab.py` contains the **ComparisonTab** class, which loads the comparison between cache configurations and the graphs.\
+`config_tab.py` contains the **ConfigTab** class, which loads the statistics and logs for each individual configuration for GUI viewing.
 
 ### inputs
-Designed to contain one `hex_inst.txt` that is used as an input to the simulator.
+Designed to contain one text file that is used as an input to the simulator. This file should be formatted as lines of RISC-V code in hex.
 
 ### outputs
 Dumps all generated log files from the simulator, similar to those created in Assignment 6. Prefixed with the cache configuration name to avoid confusion.

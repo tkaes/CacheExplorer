@@ -6,7 +6,7 @@ from gui.app import CacheExplorer
 # ------------------------------------------------------------
 # EDITABLE INFORMATION
 # ------------------------------------------------------------
-INPUT_FILE = "inputs/hex_inst.txt"
+INPUT_FILE = "inputs/assoc_demo.txt"
 CONFIGS = [
     ("direct-mapped", 1, 8, 16),
     ("2-way",         2, 8, 16),

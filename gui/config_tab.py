@@ -20,12 +20,15 @@ class ConfigTab:
         parent.rowconfigure(3, weight=1)  # buffer row
 
         # ---------- INFO LABEL: row 0, col 0 ----------
-        info = (f"CONFIG: assoc={results['assoc']}  "
-                f"sets={results['num_sets']}  "
-                f"block={results['block_bytes']}B  "
-                f"size={results['assoc'] * results['num_sets'] * results['block_bytes']}B")
+        title = f"{results['name'].upper()} CONFIGURATION"
+        info = (f"associativity: {results['assoc']:<10}"
+                f"number of sets: {results['num_sets']:<10}"
+                f"block size: {results['block_bytes']}B {"":<10}"
+                f"cache size: {results['assoc'] * results['num_sets'] * results['block_bytes']}B")
+        tk.Label(parent, text=title, font=("TkDefaultFont", LARGE_FONT, "bold")).grid(
+            row=0, column=0, columnspan=1, sticky="nw", padx=16, pady=(12, 4))
         tk.Label(parent, text=info, font=("TkDefaultFont", LARGE_FONT, "bold")).grid(
-            row=0, column=0, columnspan=3, sticky="", padx=16, pady=(12, 4))
+            row=0, column=1, columnspan=2, sticky="nw", padx=16, pady=(12, 4))
 
         # ---------- STATS TABLE: row 1, col 0 ----------
         frame = ttk.Frame(parent)

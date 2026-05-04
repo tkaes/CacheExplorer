@@ -1,6 +1,5 @@
 # DIRS
 __pycache__/
-outputs/
 
 # FILES
 *.pyc

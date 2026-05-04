@@ -36,7 +36,3 @@ class CacheExplorer:
         style.configure("TNotebook.Tab", 
                 font=("TkDefaultFont", LARGE_FONT),
                 padding=[10, 4])
-
-        # ---------- RUN/PROTOCOL ----------
-        self.root.protocol("WM_DELETE_WINDOW", self.root.quit)
-        self.root.mainloop()

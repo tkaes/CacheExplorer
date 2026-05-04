@@ -1,5 +1,5 @@
-from simulator.core import *
-from simulator.cache import *
+from simulator.core import decode, main_control, select_imm, alu_control, alu_exec, branch_taken
+from simulator.cache import u32, cache_access_lw, cache_access_sw, cache_make, cache_flush_all
 
 # ------------------------------------------------------------
 # Stages: IF, ID, EX

@@ -1,0 +1,12 @@
+Cache config: size=512B block=16B assoc=4 sets=8
+
+Total accesses: 90
+Loads:          66
+Stores:         24
+
+Hits:           84
+Misses:         6
+
+Hit rate:       0.93
+
+Writebacks:     6
